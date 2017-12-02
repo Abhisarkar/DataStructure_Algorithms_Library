@@ -1,1 +1,2 @@
-# DataStructure_Algorithms_Library
+
+Contains My implementation of popular data structures and algorithms.
