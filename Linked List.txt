@@ -1,0 +1,356 @@
+/*   Ekla Cholo Re   */
+
+
+#include<iostream>
+#include<sstream>
+#include<iterator>
+#include<vector>
+#include<set>
+#include<unordered_map>
+#include<map>
+#include<deque>
+#include<cassert>
+#include<cstring>
+#include<cstdlib>
+#include<climits>
+#include<list>
+#include<string>
+#include<algorithm>
+#include<utility>
+#include<queue>
+#include<cstdio>
+#include<ctype.h>
+#include<cmath>
+
+//macros..
+
+int compare( int a,int b ){ return a > b;}//reverse sort
+int Compare(char a,char b){return a > b ;} // Reverse Laxicographical.
+
+#define all(s) (s).begin(),(s).end()
+#define present(set,element) ( set.find(element) != set.end() )
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define vi vector <int>
+#define vll vector <long long>
+#define vc vector <char>
+#define vs vector <string>
+#define vpi vector < pair <int,int> >
+#define sclld(x) scanf("%lld",&x);
+#define ps(str)  printf("%s",str);
+#define pc(ch)  printf("%c",ch);
+#define pi(i)  printf("%d",i);
+#define nl printf("\n");
+#define ms(arr) memset(arr,0,sizeof(arr));
+#define ms1(arr) memset(arr,1,sizeof(arr));
+#define msn1(arr) memset(arr,-1,sizeof(arr));
+#define ms2d(array,m,n) memset(array, -1, sizeof(array[0][0]) * m * n);
+
+typedef long long ll;
+
+#define INF 1000000007
+#define MAX 2e5+5
+#define NA -1
+using namespace std;
+
+
+struct node
+{
+    int data;
+    struct node * link;
+
+};
+
+struct node *head;
+
+void insert_front(int val)
+{
+    struct node *temp = (struct node*)malloc( sizeof(struct node) );
+    temp -> data = val;
+    temp -> link = NULL;
+
+    if(head == NULL)
+    {
+        head = temp;
+        return;
+    }
+    struct node *temp2 = head;
+    temp -> link = temp2;
+    head = temp;
+}
+
+void insert_end(int val)
+{
+    struct node *temp = (struct node*)malloc( sizeof(struct node) );
+    temp -> data = val;
+    temp -> link = NULL;
+
+    if(head == NULL)
+    {
+        head = temp;
+        return;
+    }
+
+    struct node *temp2 = head;
+    while( temp2 -> link != NULL )
+    {
+        temp2 = temp2 -> link;
+    }
+    temp2 -> link = temp;
+
+
+}
+
+void delete_front()
+{
+    if(head == NULL)
+        return;
+
+    struct node * temp = head;
+    head = temp -> link;
+    free(temp);
+}
+
+void delete_end()
+{
+    if(head == NULL)
+        return;
+    struct node *temp = head;
+    struct node *temp1=NULL;
+    while(temp -> link != NULL)
+    {
+        temp1 = temp;
+        temp = temp -> link;
+
+    }
+    temp1 -> link = temp -> link;
+    free(temp);
+
+
+}
+
+void insert_n(int val ,int n)//0th indexing
+{
+
+    struct node *temp = (struct node*)malloc( sizeof(struct node) );
+    temp -> data = val;
+    temp -> link = NULL;
+
+    if(head == NULL)
+    {
+        head = temp;
+        return;
+    }
+
+    struct node *temp2 = head;
+    int i;
+    for(i=0;i<n-1;++i)
+    {
+        if(temp2 ->link == NULL)
+            {
+                cout <<" not accessible";
+                return;
+            }
+        temp2 = temp2 -> link;
+    }
+
+    temp -> link = temp2 -> link;
+    temp2 -> link = temp;
+
+}
+
+void delete_n(int pos)//0th indexing
+{
+    if(pos == 0)
+        {
+            delete_front();
+            return;
+        }
+
+    struct node* temp = head;
+    int i;
+    for(i=0;i<pos-1;++i)
+    {
+           if(temp -> link == NULL)
+            {
+                cout <<"Not accessible\n";
+                return;
+            }
+
+        temp = temp -> link;
+
+    }
+           if(temp -> link == NULL)
+            {
+                cout <<"Not accessible\n";
+                return;
+            }
+    struct node *temp1 = temp -> link;
+    temp -> link = temp1 -> link;
+
+
+}
+
+void reverse_list()
+{
+    struct node *prev,*cur,*link;
+    if(head == NULL)
+        return ;
+
+    cur = head;
+    prev = NULL;
+
+    while( cur != NULL )
+    {
+        link = cur -> link;
+        cur -> link = prev;
+        prev = cur;
+        cur = link;
+    }
+    head = prev;
+
+
+
+}
+
+void len()//length iterative
+{
+    struct node *temp = head;
+    if(temp == NULL)
+       {
+        cout <<"Empty\n";
+        return;
+       }
+    int c=0;
+    while( temp -> link != NULL )
+    {
+        c++;
+        temp = temp -> link;
+    }
+    cout << c+1<<"\n";
+}
+
+int recursive_len(struct node *x) // length recursive
+{
+    //cout << "yah ";
+    if(x == NULL)
+        return 0;
+
+    return 1+recursive_len(x -> link);
+}
+
+void search_list(struct node *head,int key)//search iterative
+{
+    struct node *temp = head;
+    while(temp -> link != NULL)
+    {
+        if(temp -> data == key)
+        {
+            cout << "Got it\n";
+            return;
+        }
+        else
+            temp = temp -> link;
+    }
+     cout << key<<" is Not Present\n";
+
+}
+
+void recursive_search(struct node *head,int key)//search recursive
+{
+    if (head == NULL)
+    {
+        cout <<key <<" is not present\n";
+        return ;
+    }
+    if(head -> data == key)
+    {
+        cout <<key <<" is present\n";
+        return ;
+    }
+    else
+    {
+        recursive_search(head -> link,key);
+    }
+
+}
+
+void swap_node( struct node **head,int x , int y )
+{
+
+    if (x == y)return;
+   struct node *prevx = NULL,*currx = *head;
+   while(currx && currx -> data != x)
+   {
+       prevx = currx;
+       currx = currx -> link;
+   }
+
+   struct node *prevy = NULL,*curry = *head;
+   while(curry && curry -> data != y)
+   {
+       prevy = curry;
+       curry = curry -> link;
+   }
+
+    if( currx == NULL || curry == NULL )
+    {
+        cout << "Elements are not present\n";
+        return ;
+    }
+
+    if(prevx == NULL)
+        *head = curry;
+    else
+        prevx -> link = curry;
+
+    if(prevy == NULL)
+        *head = currx;
+    else
+        prevy -> link = currx;
+
+
+    struct node *temp = currx -> link;
+    currx -> link = curry -> link;
+    curry -> link = temp;
+
+
+
+
+}
+
+
+
+void display()
+{
+    struct node *temp = head;
+    if( head == NULL )
+        return ;
+    else
+    {
+        while(temp -> link != NULL)
+        {
+            cout<< temp -> data<<" ";
+            temp = temp -> link;
+        }
+        cout<< temp -> data;
+    }
+
+}
+
+int main()
+{
+    head  = NULL;
+    insert_front(5);
+    insert_front(4);
+    insert_front(3);
+    insert_front(2);
+    insert_front(1);
+
+   
+    display();
+    
+    return 0;
+}
+

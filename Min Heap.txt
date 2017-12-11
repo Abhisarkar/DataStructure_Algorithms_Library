@@ -1,0 +1,84 @@
+#include<iostream>
+#include<vector>
+#include<set>
+#include<cassert>
+#include<cstring>
+#include<cstdlib>
+#include<list>
+#include<string>
+#include<algorithm>
+#include<utility>
+#include<queue>
+#include<cstdio>
+#include<ctype.h>
+#include<cmath>
+
+//macros..
+
+int compare( const void*a,const void *b ){ return *(int *)a - *(int *)b; }//For Quicksort in C
+int Compare(char a,char b){return a < b ? 1 : 0 ;} // Laxicographical Order using sort(Ascii Value)
+
+#define all(s) (s).begin(),(s).end()
+#define present(set,element) ( set.find(element) != set.end() )
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define vi vector <int>
+#define vll vector <long long>
+#define vc vector <char>
+#define vs vector <string>
+#define vpi vector < pair <int,int> >
+#define sclld(x) scanf("%lld",&x);
+#define ps(str)  printf("%s",str);
+#define pc(ch)  printf("%c",ch);
+#define pi(i)  printf("%d",i);
+#define nl printf("\n");
+#define ll long long
+#define ms(arr) memset(arr,0,sizeof(arr));
+#define ms1(arr) memset(arr,1,sizeof(arr));
+#define msn1(arr) memset(arr,-1,sizeof(arr));
+#define ms2d(array,m,n) memset(array, -1, sizeof(array[0][0]) * m * n);
+using namespace std;
+
+void min_heapify (int Arr[ ], int i, int N)
+{
+    int left = 2*i;
+    int right = 2*i +1;
+    int smallest = i;
+    if(left<= N && Arr[left] < Arr[i] )
+          smallest = left;
+
+    if(right <= N && Arr[right] < Arr[smallest] )
+        smallest = right;
+    if(smallest != i )
+    {
+        swap (Arr[i] , Arr[smallest]);
+        min_heapify (Arr, smallest,N);
+    }
+ }
+ void build_minheap (int Arr[ ],int N)
+{
+    int i;
+
+    for( i = N/2 ; i >= 1 ; i-- )
+    {
+        min_heapify (Arr, i ,N);
+
+
+    }
+
+}
+int main()
+{
+    int arr[] = { 0,6,2,3,1,7 };
+    int s = sizeof(arr)/sizeof(arr[0]);
+    build_minheap(arr,s-1);
+    int i;
+    cout << "Min Heap : ";
+    for( i=1;i<=5;i++ )
+    {
+        cout << arr[i]<<" ";
+    }
+
+
+}

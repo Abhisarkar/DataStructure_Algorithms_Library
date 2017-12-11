@@ -1,0 +1,148 @@
+/*   Ekla Cholo Re   */
+
+#include<iostream>
+#include<sstream>
+#include<iterator>
+#include<vector>
+#include<stack>
+#include<set>
+#include<unordered_map>
+#include<map>
+#include<deque>
+#include<cassert>
+#include<cstring>
+#include<cstdlib>
+#include<climits>
+#include<list>
+#include<string>
+#include<algorithm>
+#include<utility>
+#include<queue>
+#include<cstdio>
+#include<ctype.h>
+#include<cmath>
+
+//macros..
+
+#define all(s) (s).begin(),(s).end()
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define vi vector <int>
+#define vll vector <long long>
+#define vc vector <char>
+#define vs vector <string>
+#define vpi vector < pair <int,int> >
+#define nl printf("\n");
+#define ms(arr) memset(arr,0,sizeof(arr));
+#define ms1(arr) memset(arr,1,sizeof(arr));
+#define msn1(arr) memset(arr,-1,sizeof(arr));
+
+#define rep(i,n,x) for(i=0;i<n;i+=x)
+
+typedef long long ll;
+
+#define INF 1000000007
+#define MAX 2e5+5
+#define NA -1
+
+using namespace std;
+int arr[] = {1,1,1,1,1,1};
+int N = sizeof(arr)/sizeof(arr[0]);
+int SegmentTree[24];
+
+void BuildSegmentTree( int s,int e,int node )
+{
+    if(s>e)return;
+    if(s==e)
+    {
+        SegmentTree[node] = arr[s];
+        return;
+    }
+    int mid = s + (e-s)/2;
+    BuildSegmentTree(s,mid,2*node);
+    BuildSegmentTree(mid+1,e,2*node+1);
+
+    SegmentTree[node] = SegmentTree[2*node] + SegmentTree[2*node+1];
+
+}
+
+int SumQuery( int s,int e,int qs,int qe,int node )
+{
+
+    if( qs > e || qe < s )
+        return 0;
+    else if( s >= qs && e <= qe )
+        return SegmentTree[node];
+    else
+    {
+        int mid = s + (s-e)/2;
+
+        int p1 = SumQuery(s,mid,qs,qe,2*node);
+        int p2 = SumQuery(mid+1,e,qs,qe,2*node+1);
+
+        return (p1+p2);
+
+    }
+
+
+}
+
+
+void Update( int s,int e,int ind,int newval,int node )
+{
+    if(s == e)
+    {
+        SegmentTree[node] = newval;
+    }
+    else
+    {
+        int mid = s + ( e-s )/2;
+        if( ind >= s && ind <= mid )
+            Update(s,mid,ind,newval,2*node);
+        else
+            Update(mid+1,e,ind,newval,2*node+1);
+
+        SegmentTree[node] = SegmentTree[2*node] + SegmentTree[2*node+1];
+
+     }
+
+}
+
+
+
+
+
+int main()
+{
+    int i;
+    cout << "Simple Array elements\n";
+    rep(i,N,1)
+    {
+        cout << arr[i]<<" ";
+    }
+    nl;
+    BuildSegmentTree(0,N-1,0);
+
+    /*cout << "Segment Tree Elements\n";
+    rep(i,2*N,1)
+    {
+        cout << SegmentTree[i]<<" ";
+    }
+    */
+
+
+    Update(0,N-1,2,7,0);
+    cout << "\nUpdated value \n";
+    rep(i,N,1)
+    {
+        cout << SegmentTree[i]<<" ";
+    }
+
+
+    return 0;
+}
+
+
+
+

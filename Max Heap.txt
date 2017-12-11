@@ -1,0 +1,84 @@
+#include<iostream>
+#include<vector>
+#include<set>
+#include<cassert>
+#include<cstring>
+#include<cstdlib>
+#include<list>
+#include<string>
+#include<algorithm>
+#include<utility>
+#include<queue>
+#include<cstdio>
+#include<ctype.h>
+#include<cmath>
+
+//macros..
+
+int compare( const void*a,const void *b ){ return *(int *)a - *(int *)b; }//For Quicksort in C
+int Compare(char a,char b){return a < b ? 1 : 0 ;} // Laxicographical Order using sort(Ascii Value)
+
+#define all(s) (s).begin(),(s).end()
+#define present(set,element) ( set.find(element) != set.end() )
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define vi vector <int>
+#define vll vector <long long>
+#define vc vector <char>
+#define vs vector <string>
+#define vpi vector < pair <int,int> >
+#define sclld(x) scanf("%lld",&x);
+#define ps(str)  printf("%s",str);
+#define pc(ch)  printf("%c",ch);
+#define pi(i)  printf("%d",i);
+#define nl printf("\n");
+#define ll long long
+#define ms(arr) memset(arr,0,sizeof(arr));
+#define ms1(arr) memset(arr,1,sizeof(arr));
+#define msn1(arr) memset(arr,-1,sizeof(arr));
+#define ms2d(array,m,n) memset(array, -1, sizeof(array[0][0]) * m * n);
+using namespace std;
+
+void max_heapify (int Arr[ ], int i, int N)
+{
+    int left = 2*i;
+    int right = 2*i +1;
+    int largest = i;
+    if(left<= N && Arr[left] > Arr[i] )
+          largest = left;
+
+    if(right <= N && Arr[right] > Arr[largest] )
+        largest = right;
+    if(largest != i )
+    {
+        swap (Arr[i] , Arr[largest]);
+        max_heapify (Arr, largest,N);
+    }
+ }
+ void build_maxheap (int Arr[ ],int N)
+{
+    int i;
+
+    for( i = N/2 ; i >= 0 ; i-- )
+    {
+        max_heapify (Arr, i ,N-1);//HERE N-1( Very Very Important )
+
+
+    }
+
+}
+int main()
+{
+    int arr[] = { 1,2,3,6,7 };
+    int s = sizeof(arr)/sizeof(arr[0]);
+    build_maxheap(arr,s);
+    int i;
+    cout << "Max Heap : ";
+    for( i=0;i<5;i++ )
+    {
+        cout << arr[i]<<" ";
+    }
+
+
+}
