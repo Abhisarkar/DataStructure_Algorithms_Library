@@ -1,0 +1,81 @@
+vi vec[10];
+bool visit[10];
+
+void bfs(int s)
+{
+    msf(visit);//set to false.
+  queue <int> q;
+  q.push(s);
+  visit[s] = true;
+  int i;
+  cout << "Breadth First Search :  ";
+  while( !q.empty() )
+  {
+      int p = q.front();
+      cout << p <<" ";
+      q.pop();
+      for(i=0;i<vec[p].size();i++)
+      {
+          if( visit[ vec[p][i] ] == false )
+          {
+              q.push(vec[p][i]);
+              visit[ vec[p][i] ] = true;
+          }
+      }
+
+
+  }
+
+
+
+
+}
+
+
+int main()
+{
+    int nodes,edges;
+    cin >> nodes >> edges;
+    int i,j;
+    for(i=0;i<edges;i++)
+    {
+        int x,y;
+        cin >> x >> y;
+        vec[x].pb(y);
+    }
+    /*for(i=1;i<=nodes;i++)
+    {
+        int c=0;
+
+        //cout << "neighbours of " << i << " node " << vec[i].size();nl;
+        cout << "Adjacency list of node : " << i ;
+        for( j=0;j<vec[i].size();j++ )
+        {
+            if( j == vec[i].size() - 1 )
+            {
+                cout <<" "<<vec[i][j];
+                c=1;
+            }
+            else
+            {
+                c=1;
+                cout <<" "<< vec[i][j] << " --> ";
+            }
+
+
+
+        }
+            if(c==1)
+            {
+		nl;continue;
+	}
+            else
+                printf(" Leaf node");
+        nl;
+    }*/
+    bfs(1);
+
+    return 0;
+
+
+}

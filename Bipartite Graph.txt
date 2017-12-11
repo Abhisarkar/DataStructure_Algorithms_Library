@@ -1,0 +1,56 @@
+//program to check whether a graph is bipartite or not .
+//bipartite graph can have non-connected sub-graphs.
+//so it's important to check bipartite-property for all the sub graphs.
+//bipartite property : no two adjacent nodes should have same color(or color number)
+//In bipartite graphs TWO set of Vertices are present, where no two vertices from same set should have edge between them
+
+
+Problem: NP-Hard Problem
+		
+		Vertex cover: Minimum set of vertices such that it covers all the edges.
+
+//Here we needed to find TWO vertex covers, such that both VERTEX COVERS covers all the edges.
+//So it means for each edge present, two ends should belong to two VCs.
+//So no edge should exist, so that two ends of that edge belong to same vertex.
+//It is the essence of Bipartite graph.(There should be no two vertices from same set, that have edge between them)
+//we color the graph 1-2-1 order, and if found two neighbouring points have same color, then "-1", else pront the VCs.
+
+vi adj[100005];
+int col[100005];
+int n,m;
+
+void dfs(int u) {
+    for(auto v:adj[u]) {
+        if(!col[v])
+            col[v]=3-col[u],dfs(v);
+        else if(col[v]==col[u]) {
+            cout << "-1";exit(0);
+        }
+    }
+}
+
+int main()
+{
+    cin >> n >> m;
+    for(int i=0;i<m;++i) {
+        int a,b;cin >> a >> b;adj[a].pb(b),adj[b].pb(a);
+    }
+    ms(col);
+    for(int i=1;i<=n;++i) {
+        if(!col[i]) col[i]=1,dfs(i);
+    }
+    vi a;
+    for(int i=1;i<=n;++i) {
+        if(col[i]==1) a.pb(i);
+    }
+    cout << a.size()<<endl;
+    for(auto v:a) cout << v<< " ";
+    nl;
+    cout << n-a.size()<<endl;
+    for(int i=1;i<=n;++i) {
+        if(col[i]==2) cout << i<<" ";
+    }
+
+    return 0;
+}
+

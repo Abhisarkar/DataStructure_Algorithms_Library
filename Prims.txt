@@ -1,0 +1,82 @@
+The main Algorithm is :-> 
+---------------------------	
+	1 : at first priority queue inserts a first vertex x with weight 0.
+	2 : then it pushes all it's neighbours 
+	3 : the vertex which is connected to vertex x through least weighted edge is moved to front of priority queue.
+	(i.e the pair(weight,vertex)) is moved to front
+	4 : After saving the vertex-minweight pair by 
+	 p = Q.top();
+   	 the pair is deleted from the queue by
+		Q.pop();
+	5 : it continues..
+
+
+
+
+
+long long prim(int x)//x = vertex 1 ,first vertex chosen.
+{
+    priority_queue<PII, vector<PII>, greater<PII> > Q;//elements stored in increasing order for comparator greater.
+    int y;
+    long long minimumCost = 0;
+    PII p; ( pair < weight,vertex no > )
+    Q.push(make_pair(0, x));//inserting the first vertex to the MST with a weight 0.
+    while(!Q.empty())//untill queue in not empty
+    {
+
+
+        // Select the edge with minimum weight
+        p = Q.top();//pair p contains the least cost edge
+        
+	Q.pop();//delete the minimum weighted edge from the queue so that the MST can 
+	            //connect to the next least node
+        
+	x = p.second;//the (vertex.first element is weight ).
+        
+	// Checking for cycle
+        if(marked[x] == true)//if the vertex is visited
+            continue;//skip it.
+
+        minimumCost += p.first;//p.first is the least cost(sorted automatically by greater). Include the weight of the edge x(first iteration) -> x(next iteration)
+       
+	
+        marked[x] = true;//mark the vertex as visited
+       
+        for(int i = 0;i < adj[x].size();++i)//traverse all the neighbours of vertex x.
+        {
+            y = adj[x][i].second;//each neighbour is considered one by one.
+
+            if(marked[y] == false)//if the neighbour vertex is NOT visited earlier
+
+                Q.push(adj[x][i]);//neighbours are pushed one by one to the queue
+        }
+
+	//now priority queue Q contains all neighbours of vertex x which it will sort in increasing order of weight 
+	//automatically
+
+	
+    }
+
+    return minimumCost;
+}
+//Building An Undirected Graph
+
+int main()
+{
+    int nodes, edges, x, y;
+    long long weight, minimumCost;
+    cin >> nodes >> edges;
+    for(int i = 0;i < edges;++i)
+    {
+        cin >> x >> y >> weight;
+
+        adj[x].push_back(make_pair(weight, y));//x -> y edge with weight
+
+        adj[y].push_back(make_pair(weight, x));//y -> x edge with weight
+    }	
+    
+    // Selecting 1 as the starting node
+    minimumCost = prim(1);
+    cout << minimumCost << endl;
+    return 0;
+}

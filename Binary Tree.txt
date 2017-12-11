@@ -1,0 +1,279 @@
+#include<iostream>
+#include<vector>
+#include<set>
+#include<cstring>
+#include<cstdlib>
+#include<string>
+#include<algorithm>
+#include<queue>
+#include<cstdio>
+#include<ctype.h>
+//macros..
+
+#define all(s) (s).begin(),(s).end()
+#define present(set,element) ( set.find(element) != set.end() )
+#define pb push_back
+#define pc(str)  printf("%s",str);
+#define pi(i)  printf("%d",i);
+#define nl printf("\n");
+#define ms(arr) memset(arr,0,sizeof(arr));
+using namespace std;
+struct node
+{
+    int data;
+    struct node *left,*right;
+};
+
+struct node *root = NULL;
+struct node *newnode(int data)
+{
+    struct node *temp = (struct node*)malloc(sizeof(struct node));
+    temp -> data = data;
+    temp -> left = temp -> right = NULL;
+   return temp;
+}
+
+void levelorder(struct node *root)
+{
+    if(root == NULL)return;
+    queue <struct node *> Q;
+    Q.push(root);
+
+    while(!Q.empty())
+    {
+
+        struct node * cur = Q.front();
+        cout << cur -> data << ' ';
+        if(cur -> left != NULL) Q.push(cur -> left);
+        if(cur -> right != NULL) Q.push(cur -> right);
+        Q.pop();
+
+    }
+}
+void postorder(struct node *root)
+{
+    if(root == NULL)return;
+    postorder(root -> left);
+    postorder(root -> right);
+    cout << root -> data <<' ';
+
+}
+
+int height( struct node *root )
+{
+    if( root == NULL )return -1;
+
+    int l = height(root -> left);
+    int r = height(root -> right);
+
+    return max(l,r)+1;
+
+
+}
+
+//Ancestors of a node,printing recursively
+
+int check(struct node *root , int data)
+{
+    if(root == NULL)return 0;
+
+    if(root -> data == data)return 1;
+
+     if( check(root -> left,data) ||  check(root -> right,data))
+        {
+            printf("%d ",root -> data);
+                return 1;
+        }
+
+
+        return 0;
+
+    //if(root -> data == data)return 1;
+}
+
+
+int main()
+{
+    root = NULL;
+    root = newnode(1);
+    root -> left = newnode(2);    root -> right = newnode(3);
+    root -> left -> left = newnode(4); root -> left -> right = newnode(5);  root -> right -> left = newnode(6) ;  root -> right -> right = newnode(7);
+     root -> right -> right -> left = newnode(8); root -> left -> right -> left = newnode(9);
+    int hl = height(root->left);
+    int hr = height(root -> right);
+    //cout << hl+hr+2;
+    int c = check(root,96);
+    printf(c==1?"present":"Nope");
+
+
+   // cout << "BFS traversal(level order) : ";
+        //levelorder(root);nl;nl;
+    //cout << "DFS traversal(postorder) : ";
+        //postorder(root);
+    //printf("%d",root -> data);
+
+    return 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include<iostream>
+#include<vector>
+#include<set>
+#include<cstring>
+#include<cstdlib>
+#include<string>
+#include<algorithm>
+#include<queue>
+#include<cstdio>
+#include<ctype.h>
+//macros..
+
+#define all(s) (s).begin(),(s).end()
+#define present(set,element) ( set.find(element) != set.end() )
+#define pb push_back
+#define pc(str)  printf("%s",str);
+#define pi(i)  printf("%d",i);
+#define nl printf("\n");
+#define ms(arr) memset(arr,0,sizeof(arr));
+using namespace std;
+struct node
+{
+    int data;
+    struct node *left,*right;
+};
+
+struct node *root = NULL;
+struct node *newnode(int data)
+{
+    struct node *temp = (struct node*)malloc(sizeof(struct node));
+    temp -> data = data;
+    temp -> left = temp -> right = NULL;
+   return temp;
+}
+
+void levelorder(struct node *root)
+{
+    if(root == NULL)return;
+    queue <struct node *> Q;
+    Q.push(root);
+
+    while(!Q.empty())
+    {
+
+        struct node * cur = Q.front();
+        cout << cur -> data << ' ';
+        if(cur -> left != NULL) Q.push(cur -> left);
+        if(cur -> right != NULL) Q.push(cur -> right);
+        Q.pop();
+
+    }
+}
+void postorder(struct node *root)
+{
+    if(root == NULL)return;
+    postorder(root -> left);
+    postorder(root -> right);
+    cout << root -> data <<' ';
+
+}
+
+int height( struct node *root )
+{
+    if( root == NULL )return -1;
+
+    int l = height(root -> left);
+    int r = height(root -> right);
+
+    return max(l,r)+1;
+
+
+}
+int check(struct node *root , int data)
+{
+    if(root == NULL)return 0;
+
+    if(root -> data == data)return 1;
+
+     if( check(root -> left,data) ||  check(root -> right,data))
+        {
+            printf("%d ",root -> data);
+                return 1;
+        }
+
+
+        return 0;
+
+    //if(root -> data == data)return 1;
+}
+
+
+int main()
+{
+    root = NULL;
+    root = newnode(1);
+    root -> left = newnode(2);    root -> right = newnode(3);
+    root -> left -> left = newnode(4); root -> left -> right = newnode(5);  root -> right -> left = newnode(6) ;  root -> right -> right = newnode(7);
+     root -> right -> right -> left = newnode(8); root -> left -> right -> left = newnode(9);
+    int hl = height(root->left);
+    int hr = height(root -> right);
+    //cout << hl+hr+2;
+    int c = check(root,96);
+    printf(c==1?"present":"Nope");
+
+
+   // cout << "BFS traversal(level order) : ";
+        //levelorder(root);nl;nl;
+    //cout << "DFS traversal(postorder) : ";
+        //postorder(root);
+    //printf("%d",root -> data);
+
+    return 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

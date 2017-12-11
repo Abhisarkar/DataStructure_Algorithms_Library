@@ -1,0 +1,97 @@
+struct node {
+    int data;
+    struct node *left,*right;
+};
+
+struct node *getnewnode(int val) {//create a new node
+
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp->data=val;
+    temp->left=temp->right=nullptr;
+    return temp;
+
+}
+
+struct node *insertkey(struct node *root,int val) {//insert a new key
+    if(!root)
+        root=getnewnode(val);
+    else if(root->data >= val)
+        root->left=insertkey(root->left,val);
+    else if(root->data < val)
+        root->right=insertkey(root->right,val);
+
+    return root;
+}
+
+void display_inorder(struct node *root) {
+    if(!root) return;
+    display_inorder(root->left);
+    cout << root->data<<" ";
+    display_inorder(root->right);
+}
+
+struct node *findmin(struct node *root) {
+    if(!root) return root;
+    struct node *temp = root;
+    while(temp->left) {
+        temp = temp->left;
+    }
+    return temp;
+}
+
+struct node *deletekey(struct node *root,int key) {
+    if(!root) return root;
+    else if(root->data<key) root->right=deletekey(root->right,key);
+    else if(root->data>key) root->left=deletekey(root->left,key);
+    else {
+        if(!root->left && !root->right) {
+            free(root);root=nullptr;//doubt
+        }
+        else if(root->right==nullptr) {//right null
+            struct node *temp=root->left;
+            free(root);
+            return temp;
+        }
+        else if(root->left==nullptr) {//left null
+            struct node *temp=root->right;
+            free(root);
+            return temp;
+        }
+        else {
+            struct node *temp = findmin(root->right);
+            root->data = temp->data;
+            root->right = deletekey(root->right,temp->data);
+        }
+
+    }
+    return root;
+
+}
+
+int main()
+{
+
+    struct node *root=NULL;
+    root=getnewnode(2);
+    root=insertkey(root,1);
+    root=insertkey(root,3);root=insertkey(root,5);root=insertkey(root,4); root=insertkey(root,6); root=insertkey(root,7);
+                                                //TREE STRUCTURE
+                                                //      2
+                                                //     / \
+                                                //    1   3
+                                                //         \
+                                                //          5
+                                                //         / \
+                                                //        4   6
+                                                //             \
+                                                //              7
+    //cout << root->data <<" "<<root->right->data;
+    //display_inorder(root);
+    //struct node *temp = findmin(root);
+    //cout << temp->data;
+    display_inorder(root);
+    root=deletekey(root,5);
+    nl;
+    display_inorder(root);
+    return 0;
+}

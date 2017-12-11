@@ -1,0 +1,84 @@
+link :  http://xoptutorials.com/index.php/2017/01/01/spojhighways/
+
+					****   ALGORITHM   ****
+
+		1 : Finds shortest path from the source to destination.
+		2 : at each step, a node assigns shortest possible distance from itself to all it's neighbours
+		3 : at each iteration it finds the nearest node (thanks to min-heap priority_queue).
+		4 : from there it again finds the nearest node and expands,and it goes on.
+		5 : each time one node is visited,it is marked visited so that it is not visited again.
+		6 : a node is marked visited only after assigning shortest distance to all of it's neighbours.
+		7 : the distance from source is stored in that node( d[node] ). 
+		
+			         	By using dijkstras, one can compute,
+				1: shortest distance between two nodes
+				2: shortest distance between one node and all the other nodes in the graph.
+
+vpi adj[100010];//graph
+int d[100010];//distance array from source
+int vis[100010];//if the current node is visited.
+int node,edge;
+
+
+int dijkstra( int node,int edge,int start,int en )
+{
+    int w1,w2,s,s1,i;
+    priority_queue < pii,vpi,greater <pii> > q;
+    q.push( mp(0,start) );//pair(weight,vertex)
+    d[start]=0;
+
+    while(!q.empty())
+    {
+        s = q.top().second;//the vertex being considered
+        w1 = q.top().first;//the distance
+        q.pop();
+
+        rep(i,adj[s].size(),1)
+        {
+            s1 = adj[s][i].second;//the vertex
+            w2 = adj[s][i].first;//the distance from source
+            if(!vis[s] && w1+w2 < d[s1] )//if the node is not visited and && distance from source through this route(through s)
+				//is smaller than the previous one.
+	//One doubt I had is if a node with larger distance is pushed to queue, then it's distance is updated to smaller value
+	//This is why Min-heap is used as it brings the min-distance node to first.
+            {
+                d[s1] = w1+w2;//MAIN POINT, the distance is updated to smallest possible from root, before the node is visited
+                q.push(mp(d[s1],s1)); // Here I thought if a node is visited earlier and then marked by some node with some
+				smaller distance. But realized that we go forward to some node by taking smallest distance
+				possible to that node.So once a node is visited, a smaller distance to it cannot be found anymore. 
+            }
+        }
+        vis[s] = 1;//mark the node as visited and move to the nearest node.
+        if(s == en) break;//if destination is reached.
+    }
+
+    return d[en];
+
+}
+
+
+
+int main()
+{
+        int node,edge,start,en;
+        cin >> node >> edge >> start >> en;
+        rep(i,node+1,1)
+        {
+            adj[i].clear();d[i]=INF;vis[i] = 0;//initializations
+        }
+        rep(i,edge,1)
+        {
+            int u,v,w;cin >> u >> v >> w;
+            adj[u].pb(mp(w,v));
+            adj[v].pb(mp(w,u));
+        }
+
+
+        int dist = dijkstra(node,edge,start,en);
+        if(dist == INF) cout << "NONE\n";
+        else
+            cout << dist << endl;
+
+
+    return 0;
+}

@@ -1,0 +1,82 @@
+//Disjoint SET is used here.
+
+int nodes,edges;
+void init(int parent[],int n)
+{
+    int i;
+
+    for( i=0;i<n;++i)
+    {
+        parent[i] = -1;//initialing the parent array to -1,which means at first the vertex are itself one subset.
+    }
+}
+int find1( int parent[],int x )
+{
+
+    if(parent[x] == -1 )//if it's -1 i.e it is not connected to any vertex.
+        return x;//x is only member in the subset.
+
+    else //the vertex x points to other vertex.(i.e this vertex is already connected)
+        return find1(parent,parent[x]);//finding the parent of the parent of vertex x.
+
+}
+
+void union1( int parent[],int x,int y )
+{
+
+    int rootx = find1(parent,x);//finding the subset representative of vertex x.
+    int rooty = find1(parent,y);//finding the subset representative of vertex y.
+    parent[rootx] = rooty;//Connecting the two subset representatives,so they are merged into one subset.
+
+}
+
+int kruskal(int parent[],pair <int,pair <int,int> > p[])
+{
+
+    int x,y,cost,mincost=0;
+    int i;
+
+    for(i=0;i<edges;i++)
+    {
+       //at first we take two vertices of the edge.
+
+        x = p[i].second.first;//x co-ordinate
+        y = p[i].second.second;//y co-ordinate
+
+        cost = p[i].first;//weight of the edge
+        
+        if( find1(parent,x) != find1(parent,y) )//getting the subset representative of two vertex x and y.
+        {
+            mincost += cost;//if they are not from same subset then add the edges's weight.
+            union1(parent,x,y);//merging the two subset into one subset and parent[x] will be y( i.e y is the subset representative )
+        }
+    }
+    return mincost;
+
+}
+
+int main()
+{
+    int x,y,weight,mincost=0;
+    cin >> nodes >> edges;
+
+    int i;
+    int parent[nodes];//parent array contains the subset representative of a vertex at parent[vertex].
+    init( parent,sizeof(parent));//initializing to -1
+    pair < int , pair <int,int> > p[edges];// pair is of type ( weight , (x , y) ) representing one Edge .
+                                        	   // And it's an Array of pairs of size of number of total edges.
+
+    for(i=0;i<edges;++i)
+    {
+        cin >> x >> y >> weight;
+        p[i] = mp(weight,mp(x,y));//Inserting values.
+    }
+
+    sort(p,p+edges);//sort it according to the weights.
+    mincost = kruskal(parent,p);
+    cout <<"Minimum Cost : "<<mincost;
+
+    return 0;
+
+}
+

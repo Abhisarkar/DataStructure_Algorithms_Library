@@ -1,0 +1,35 @@
+bool adj[6][6];
+
+int main()
+{
+     int nodes,edges;
+     cin >> nodes >> edges;
+     int i,j;
+     for(i=0;i<=nodes;i++)
+     {
+         for(j=0;j<=nodes;j++)
+         {
+              adj[i][j] = false ;
+         }
+     }
+
+
+     for(i=0;i<edges;i++)
+     {
+         int x,y;
+         cin >> x >> y;
+         adj[x][y] = true;
+     }
+     nl;
+     for(i=0;i<=nodes;i++)
+     {
+         for(j=0;j<=nodes;j++)
+         {
+              cout << adj[i][j] << " ";
+         }
+         nl;
+     }
+
+     return 0;
+
+}
